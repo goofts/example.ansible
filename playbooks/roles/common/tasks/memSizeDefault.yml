@@ -1,0 +1,46 @@
+---
+
+- name: MemSizeDefault-Local1
+  command: chmod 666 /etc/sysctl.conf 
+  become: yes
+
+
+- name: MemSizeDefault-Local2
+  command: sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+  become: yes
+
+- name: MemSizeDefault-Local3
+  command: sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+  become: yes
+
+- name: MemSizeDefault-Local4
+  command: echo "net.core.rmem_max = 124928" >> /etc/sysctl.conf
+  become: yes
+
+- name: MemSizeDefault-Local5
+  command: echo "net.core.wmem_max = 124928" >> /etc/sysctl.conf
+  become: yes
+
+- name: MemSizeDefault-Local6
+  command: /sbin/sysctl -p
+  become: yes
+
+- name: MemSizeDefault-Local7
+  command: chmod 644 /etc/sysctl.conf
+  become: yes
+
+- name: MemSizeDefault-Remote1
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+
+- name: MemSizeDefault-Remote2
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+
+- name: MemSizeDefault-Remote3
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '\$a\net.core.rmem_max\ =\ 124928' /etc/sysctl.conf
+
+- name: MemSizeDefault-Remote4
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '\$a\net.core.wmem_max\ =\ 124928' /etc/sysctl.conf
+
+
+- name: MemSizeDefault-Remote5
+  command: ssh ansible@{{ targetHost }} -p 22 sudo /sbin/sysctl -p

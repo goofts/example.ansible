@@ -1,0 +1,13 @@
+---
+
+- name: 启动iperf3
+  command: iperf3 -s -D
+
+- name: 检查iperf3的启动情况
+  raw: ps -ef | grep iperf3 | grep -v grep
+
+- name: 启动测试目标iperf3
+  command: ssh ansible@{{ targetHost }} -p 22 iperf3 -s -D
+
+- name: 检查测试目标iperf3的启动情况
+  command: ssh ansible@{{ targetHost }} -p 22 ps -ef | grep iperf3 | grep -v grep

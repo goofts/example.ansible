@@ -1,0 +1,9 @@
+---
+
+- name: MTR 测试
+  command: /usr/sbin/mtr -r -c 10 "{{ targetHost }}"
+  register: mtrResult
+
+- name: 打印结果
+  debug:
+      msg: "{'mtrResult':'''{{ mtrResult.stdout }}'''}"

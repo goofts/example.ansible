@@ -1,0 +1,33 @@
+---
+
+- name: PacketLoss-UDP-len64-30Seconds-target
+  command: ssh speedtest@{{ targetHost }} -p 10022 iperf3 -c {{ sourseHost }} -u -l 64 -t 30 -i 5 -R
+  register: packetLoss64Result
+
+- name: 打印结果
+  debug:
+      msg: "{'packetLoss64LocalResult':'''{{ packetLoss64Result.stdout }}'''}"
+
+- name: PacketLoss-UDP-len64-30Seconds
+  command: iperf3 -c {{ targetHost }} -u -l 64 -t 30 -i 5 -R
+  register: packetLoss64TargetResult 
+
+- name: 打印结果
+  debug:
+      msg: "{'packetLoss64RemoteResult':'''{{ packetLoss64TargetResult.stdout }}'''}"
+
+- name: PacketLoss-UDP-len4000-30Seconds-target
+  command: ssh speedtest@{{ targetHost }} -p 10022 iperf3 -c {{ sourseHost }} -u -l 4000 -t 30 -i 5 -R
+  register: packetLoss4000Result
+
+- name: 打印结果
+  debug:
+      msg: "{'packetLoss4000LocalResult':'''{{ packetLoss4000Result.stdout }}'''}"
+
+- name: PacketLoss-UDP-len4000-30Seconds
+  command: iperf3 -c {{ targetHost }} -u -l 4000 -t 30 -i 5 -R
+  register: packetLoss4000TargetResult             
+
+- name: 打印结果
+  debug:
+      msg: "{'packetLoss4000RemoteResult':'''{{ packetLoss4000TargetResult.stdout }}'''}"

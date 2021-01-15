@@ -1,0 +1,30 @@
+---
+
+- name: 检查iperf3是否已经安装
+  shell: ls /usr/bin/iperf3
+  ignore_errors: True
+  register: result
+
+# Debian, Ubuntu.
+- name: install apt iperf3 packages
+  apt: name=iperf3 state=present
+  become: yes
+  when: result is failed and ansible_pkg_mgr == "apt"
+
+# Debian, Ubuntu.
+- name: install apt mtr packages
+  apt: name=mtr state=present
+  become: yes
+  when: result is failed and ansible_pkg_mgr == "apt"
+
+# CentOS.
+- name: install yum iperf3 packages
+  yum: name=iperf3 state=present
+  become: yes
+  when: result is failed and ansible_pkg_mgr == "yum"
+        
+# CentOS.
+- name: install yum mtr packages
+  yum: name=mtr state=present
+  become: yes
+  when: result is failed and ansible_pkg_mgr == "yum"

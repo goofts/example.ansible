@@ -1,0 +1,62 @@
+---
+
+- name: SetDefault-Local1
+  command: chmod 666 /etc/sysctl.conf 
+  become: yes
+
+
+- name: SetDefault-Local2
+  command: sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+  become: yes
+
+- name: SetDefault-Local3
+  command: sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+  become: yes
+
+- name: SetDefault-Local4
+  command: sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.conf
+  become: yes
+
+- name: SetDefault-Local5
+  command: sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.conf
+  become: yes
+
+- name: SetDefault-Local6
+  command: echo "net.ipv4.tcp_rmem = 8760  256960  4194304" >> /etc/sysctl.conf
+  become: yes
+
+- name: SetDefault-Local7
+  command: echo "net.ipv4.tcp_wmem = 8760  256960  4194304" >> /etc/sysctl.conf
+  become: yes
+
+
+- name: SetDefault-Local8
+  command: chmod 644 /etc/sysctl.conf
+  become: yes
+
+- name: SetDefault-Local9
+  command: /sbin/sysctl -p
+  become: yes
+
+- name: SetDefault-Remote1
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+
+- name: SetDefault-Remote2
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+
+- name: SetDefault-Remote3
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.conf
+
+- name: SetDefault-Remote4
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.conf
+
+
+- name: SetDefault-Remote5
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '\$a\net.ipv4.tcp_rmem\ =\ 8760\ \ 256960\ \ 4194304' /etc/sysctl.conf
+
+
+- name: SetDefault-Remote6
+  command: ssh ansible@{{ targetHost }} -p 22 sudo sed -i '\$a\net.ipv4.tcp_wmem\ =\ 8760\ \ 256960\ \ 4194304' /etc/sysctl.conf
+
+- name: SetDefault-Remote7
+  command: ssh ansible@{{ targetHost }} -p 22 sudo /sbin/sysctl -p

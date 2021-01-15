@@ -1,0 +1,70 @@
+---
+
+- name: WndSizeDefault-Local1
+  raw: if [ `sudo /sbin/sysctl -a | grep -c net.ipv4.tcp_mem` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.ipv4.tcp_mem);else echo -e 'net.ipv4.tcp_mem = 42519\\t56692\\t85038';fi 
+  become: yes
+  register: local1Result
+
+- name: 打印结果
+  debug:
+      msg: "{'localTCPmemResult':'''{{ local1Result.stdout }}'''}"
+
+
+- name: WndSizeDefault-Local2
+  raw: if [ `sudo /sbin/sysctl -a | grep -c net.ipv4.tcp_rmem` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.ipv4.tcp_rmem);else echo -e 'net.ipv4.tcp_rmem = 4096\\t87380\\t6291456';fi
+  become: yes
+  register: local2Result
+
+- name: 打印结果
+  debug:
+      msg: "{'localTCPrmemResult':'''{{ local2Result.stdout }}'''}"
+
+- name: WndSizeDefault-Local3
+  raw: if [ `sudo /sbin/sysctl -a | grep -c net.ipv4.tcp_wmem` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.ipv4.tcp_wmem);else echo -e 'net.ipv4.tcp_wmem = 4096\\t16384\\t4194304';fi
+  become: yes
+  register: local3Result
+
+- name: 打印结果
+  debug:
+      msg: "{'localTCPwmemResult':'''{{ local3Result.stdout }}'''}"
+
+- name: WndSizeDefault-Local4
+  raw: if [ `sudo /sbin/sysctl -a | grep -c net.core.rmem*` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.core.rmem*);else echo -e 'net.core.rmem_default = 212992\\nnet.core.rmem_max = 212992';fi
+  become: yes
+  register: local4Result
+
+- name: 打印结果
+  debug:
+      msg: "{'localCorermemResult':'''{{ local4Result.stdout }}'''}"
+
+- name: WndSizeDefault-Remote1
+  command: ssh speedtest@{{ targetHost }} -p 10022 if [ `sudo /sbin/sysctl -a | grep -c net.ipv4.tcp_mem` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.ipv4.tcp_mem);else echo -e 'net.ipv4.tcp_mem = 42519\\t56692\\t85038';fi
+  register: remote1Result
+
+- name: 打印结果
+  debug:
+      msg: "{'remoteTCPmemResult':'''{{ remote1Result.stdout }}'''}"
+
+- name: WndSizeDefault-Remote2
+  command: ssh speedtest@{{ targetHost }} -p 10022 if [ `sudo /sbin/sysctl -a | grep -c net.ipv4.tcp_rmem` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.ipv4.tcp_rmem);else echo -e 'net.ipv4.tcp_rmem = 4096\\t87380\\t6291456';fi
+  register: remote2Result
+
+- name: 打印结果
+  debug:
+      msg: "{'remoteTCPrmemResult':'''{{ remote2Result.stdout }}'''}"
+
+- name: WndSizeDefault-Remote3
+  command: ssh speedtest@{{ targetHost }} -p 10022 if [ `sudo /sbin/sysctl -a | grep -c net.ipv4.tcp_wmem` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.ipv4.tcp_wmem);else echo -e 'net.ipv4.tcp_wmem = 4096\\t16384\\t4194304';fi
+  register: remote3Result
+
+- name: 打印结果
+  debug:
+      msg: "{'remoteTCPwmemResult':'''{{ remote3Result.stdout }}'''}"
+
+- name: WndSizeDefault-Remote4
+  command: ssh speedtest@{{ targetHost }} -p 10022 if [ `sudo /sbin/sysctl -a | grep -c net.core.rmem*` -gt 0 ];then (sudo /sbin/sysctl -a | grep net.core.rmem*);else echo -e 'net.core.rmem_default = 212992\\nnet.core.rmem_max = 212992';fi
+  register: remote4Result
+
+- name: 打印结果
+  debug:
+      msg: "{'remoteCorermemResult':'''{{ remote4Result.stdout }}'''}"

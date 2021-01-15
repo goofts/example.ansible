@@ -1,0 +1,33 @@
+---
+
+- name: Iperf Single TCP Process MSS1448 Upload
+  command: iperf3 -c {{ targetHost }} -n 2G -i 2 -O 3 -f M -M 1448 -V -b 1G
+  register: singleTCPUploadResult
+
+- name: 打印结果
+  debug:
+      msg: "{'singleTCPUploadResultChange':'''{{ singleTCPUploadResult.stdout }}'''}"
+
+- name: Iperf Single TCP Process MSS1448 Download
+  command: ssh ansible@{{ targetHost }} -p 22 iperf3 -c {{ sourseHost }} -n 2G -i 2 -O 3 -f M -M 1448 -V -b 1G
+  register: singleTCPDownloadResult
+
+- name: 打印结果
+  debug:
+      msg: "{'singleTCPDownloadResultChange':'''{{ singleTCPDownloadResult.stdout }}'''}"
+
+- name: Iperf Four TCP Processes MSS1448 Upload
+  command: iperf3 -c {{ targetHost }} -n 2G -i 2 -O 3 -f M -P 4 -M 1448 -V -b 1G
+  register: fourTCPUploadResult
+
+- name: 打印结果
+  debug:
+      msg: "{'fourTCPUploadResultChange':'''{{ fourTCPUploadResult.stdout }}'''}"
+
+- name: Iperf Four TCP Processes MSS1448 Download
+  command: ssh ansible@{{ targetHost }} -p 22 iperf3 -c {{ sourseHost }} -n 2G -i 2 -O 3 -f M -P 4 -M 1448 -V -b 1G
+  register: fourTCPDownloadResult
+
+- name: 打印结果
+  debug:
+      msg: "{'fourTCPDownloadResultChange':'''{{ fourTCPDownloadResult.stdout }}'''}"

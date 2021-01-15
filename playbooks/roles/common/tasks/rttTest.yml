@@ -1,0 +1,25 @@
+---
+
+- name: RTT 测试[64字节]
+  command: ping "{{ targetHost }}" -i 0.2 -c 100 -M do -s 64
+  register: ping64Result
+
+- name: 打印结果
+  debug:
+      msg: "{'ping64Result':'''{{ ping64Result.stdout }}'''}"
+
+- name: RTT 测试[512字节]
+  command: ping "{{ targetHost }}" -i 0.2 -c 100 -M do -s 512
+  register: ping512Result
+
+- name: 打印结果
+  debug:
+      msg: "{'ping512Result':'''{{ ping512Result.stdout }}'''}"
+
+- name: RTT 测试[1472字节]
+  command: ping "{{ targetHost }}" -i 0.2 -c 100 -M do -s 1472
+  register: ping1472Result
+
+- name: 打印结果
+  debug:
+      msg: "{'ping1472Result':'''{{ ping1472Result.stdout }}'''}"

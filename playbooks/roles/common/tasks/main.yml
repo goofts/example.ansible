@@ -1,0 +1,19 @@
+---
+# tasks file for speedtest by ansible
+
+- name: 网络性能测试
+  hosts: all
+  tasks:
+
+      - include: setup.yml
+      - include: startIperf.yml
+      - include: rttTest.yml
+      - include: mtrTest.yml
+      - include: packetLossPercentTest.yml
+      - include: wndSizeDefaultEcho.yml
+      - include: iperfTCP.yml
+      - include: changeWndSize.yml
+      - include: iperfTCPChange.yml
+      - include: memSizeDefault.yml
+      - include: iperfUDP.yml
+      - include: setDefault.yml

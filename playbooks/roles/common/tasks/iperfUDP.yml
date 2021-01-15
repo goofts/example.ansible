@@ -1,0 +1,17 @@
+---
+
+- name: Iperf UDP 300M Size1472 Upload
+  command: ssh speedtest@{{ targetHost }} -p 10022 iperf3 -c {{ sourseHost }} -u -l 1472 -b 300M -t 20 -i 2 -R
+  register: UDPUploadResult
+
+- name: 打印结果
+  debug:
+      msg: "{'UDPUploadResult':'''{{ UDPUploadResult.stdout }}'''}"
+
+- name: Iperf UDP 300M Size1472 Download
+  command: iperf3 -c {{ targetHost }} -u -l 1472 -b 300M -t 20 -i 2 -R
+  register: UDPDownloadResult
+
+- name: 打印结果
+  debug:
+      msg: "{'UDPDownloadResult':'''{{ UDPDownloadResult.stdout }}'''}"
